@@ -1,28 +1,6 @@
 version: '3.8'
 
 services:
-  traefik:
-    image: traefik:v2.9
-    container_name: traefik
-    # Expose HTTP/HTTPS for Let’s Encrypt and routing
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"          # stores ACME certificates
-    command:
-      # Enable Docker provider, dashboard (optional), entrypoints, and ACME
-      - "--api.insecure=true"                 # Optional: remove or secure in production
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      # ACME TLS-ALPN or TLSChallenge (choose one). Here using TLS challenge:
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=you@example.com"   # <<-- CHANGE THIS to your email
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    networks:
-      - coolify
 
   changedetection:
     image: ghcr.io/dgtlmoon/changedetection.io
